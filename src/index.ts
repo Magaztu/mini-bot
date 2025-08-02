@@ -2,9 +2,14 @@
 
 import { Client, GatewayIntentBits } from 'discord.js';
 import { joinVoiceChannel, createAudioPlayer, createAudioResource, AudioPlayerStatus, VoiceConnectionStatus } from '@discordjs/voice';
+import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import path from 'path';
 dotenv.config();
+
+// Añadir porque el bot de voz lo necesita como dependencia
+// import ffmpegStatic from 'ffmpeg-static';
+// import { setFfmpegPath } from 'prism-media';
 
 const client = new Client({
   intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent],
@@ -15,15 +20,15 @@ client.once('ready', () => {
 });
 
 client.on('messageCreate', (message) => {
-  if (message.author.bot) return;
+    if (message.author.bot) return;
 
-  if (message.content === 'Adachi') {
+    if (message.content === 'Adachi') {
     message.reply('True!');
-  }
+    }
 
-  if (message.content === 'eeeee') {
-    message.channel.send('e e e');
-    const voiceChannel = message.member?.voice.channel;
+    if (message.content === 'eeeee') {
+        const voiceChannel = message.member?.voice.channel;
+        // message.channel.send('e e e');
 
     if (!voiceChannel) {
       return message.reply("I wish I never met you, e e e e e");
@@ -37,6 +42,7 @@ client.on('messageCreate', (message) => {
     });
 
     connection.on('stateChange', (oldState, newState) => {
+        message.channel.send('e e e');
       // ~ Proceder si está listo
       if (newState.status === VoiceConnectionStatus.Ready) {
         console.log('Bot en vc');
@@ -44,13 +50,15 @@ client.on('messageCreate', (message) => {
         const player = createAudioPlayer();
 
         // const soundPath = '../Audio/jump.mp3';
-        const soundPath = path.join(__dirname, '..', 'Audio', 'jump.mp3');
+        //const soundPath = path.join(__dirname, '..', 'Audio', 'jump.mp3');
+        const soundPath = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'Audio', 'jump.mp3');
+        // & Somehow the path became more complex lmaoo fuck ESM modules
 
         const resource = createAudioResource(soundPath);
 
         // ! Reproducir
-        connection.subscribe(player);
         player.play(resource);
+        connection.subscribe(player);
 
         // * Desconectarse
         player.on(AudioPlayerStatus.Idle, () => {
