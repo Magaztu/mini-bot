@@ -8,8 +8,8 @@ import path from 'path';
 dotenv.config();
 
 // Añadir porque el bot de voz lo necesita como dependencia
-// import ffmpegStatic from 'ffmpeg-static';
-// import { setFfmpegPath } from 'prism-media';
+// import ffmpegPath from 'ffmpeg-static';
+// process.env.FFMPEG_PATH = ffmpegPath as unknown as string;
 
 const client = new Client({
   intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent],
