@@ -7,7 +7,7 @@ import { SlashCommandBuilder } from "discord.js";
 // 	await interaction.reply('Pong!')
 // }
 
-module.exports = {
+export default{
     data: new SlashCommandBuilder().setName('Perritos').setDescription('Trae perritos de mi API favorita'),
     async execute(interaction: any){
         let perritoIMG = await fetch('https://dog.ceo/api/breeds/image/random');
